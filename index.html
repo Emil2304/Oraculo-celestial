@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oráculo Celestial — Academia de los Mil Imperios</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c; --gold-light: #f0d080; --gold-dim: #7a6030;
+    --ash: #8a7090; --divine: #e8d5b0; --blood: #8b1a1a;
+    --moon: #b8c8e8; --shadow: #0d0a12;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--shadow); color:var(--divine); font-family:'EB Garamond',serif; min-height:100vh; overflow-x:hidden; }
+  .starfield { position:fixed; inset:0; z-index:0; overflow:hidden; }
+  .starfield::before, .starfield::after {
+    content:''; position:absolute; inset:0;
+    background-image:
+      radial-gradient(1px 1px at 10% 20%, rgba(201,168,76,.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 25% 75%, rgba(184,200,232,.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 40% 10%, rgba(201,168,76,.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 55% 50%, rgba(255,255,255,.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 70% 30%, rgba(201,168,76,.4) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 15% 60%, rgba(201,168,76,.7) 0%, transparent 100%),
+      radial-gradient(1px 1px at 60% 70%, rgba(201,168,76,.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 15%, rgba(184,200,232,.6) 0%, transparent 100%),
+      radial-gradient(2px 2px at 75% 55%, rgba(201,168,76,.3) 0%, transparent 100%);
+    background-size:400px 400px; animation:twinkle 8s ease-in-out infinite alternate;
+  }
+  .starfield::after { background-size:300px 300px; animation-duration:12s; animation-direction:alternate-reverse; }
+  @keyframes twinkle { 0%{opacity:.6;transform:scale(1);} 100%{opacity:1;transform:scale(1.02);} }
+  .nebula {
+    position:fixed; inset:0; z-index:0;
+    background:
+      radial-gradient(ellipse 60% 40% at 20% 30%, rgba(100,30,120,.15) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 60% at 80% 70%, rgba(30,50,100,.12) 0%, transparent 70%),
+      radial-gradient(ellipse 80% 30% at 50% 90%, rgba(120,20,30,.08) 0%, transparent 70%);
+  }
+  .page { position:relative; z-index:1; min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:2rem 1rem 4rem; }
+
+  header { text-align:center; padding:2rem 0 1.5rem; }
+  .crown-line { display:flex; align-items:center; justify-content:center; gap:1rem; margin-bottom:.5rem; }
+  .crown-line::before, .crown-line::after { content:''; flex:1; max-width:120px; height:1px; background:linear-gradient(to var(--d,right), transparent, var(--gold)); }
+  .crown-line::before { --d:right; } .crown-line::after { --d:left; }
+  .crown-symbol { font-size:1.4rem; color:var(--gold); animation:pulse-gold 3s ease-in-out infinite; }
+  @keyframes pulse-gold { 0%,100%{opacity:.7;text-shadow:0 0 8px var(--gold);} 50%{opacity:1;text-shadow:0 0 20px var(--gold-light),0 0 40px var(--gold);} }
+  header h1 {
+    font-family:'Cinzel Decorative',serif; font-size:clamp(1.4rem,4vw,2.4rem); font-weight:900;
+    background:linear-gradient(135deg,var(--gold-dim),var(--gold-light),var(--gold));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:.3rem;
+  }
+  header .subtitle { font-family:'Cinzel',serif; font-size:clamp(.7rem,2vw,.9rem); color:var(--ash); letter-spacing:.25em; text-transform:uppercase; }
+  .divider { width:100%; max-width:500px; margin:1.2rem auto; display:flex; align-items:center; gap:.8rem; }
+  .divider::before, .divider::after { content:''; flex:1; height:1px; background:linear-gradient(to var(--d,right), transparent, var(--gold-dim)); }
+  .divider::before{--d:right;} .divider::after{--d:left;}
+  .divider-gem { width:6px; height:6px; background:var(--gold); transform:rotate(45deg); box-shadow:0 0 10px var(--gold); }
+
+  .section-label { font-family:'Cinzel',serif; font-size:.7rem; letter-spacing:.3em; text-transform:uppercase; color:var(--ash); text-align:center; margin-bottom:1.2rem; }
+  .houses-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:.7rem; width:100%; max-width:780px; margin-bottom:2rem; }
+  .house-card { background:rgba(255,255,255,.02); border:1px solid rgba(201,168,76,.15); border-radius:4px; padding:.9rem .6rem; cursor:pointer; text-align:center; transition:all .3s; position:relative; overflow:hidden; }
+  .house-card:hover, .house-card.active { border-color:var(--house-color,var(--gold)); box-shadow:0 0 20px rgba(var(--house-rgb,201,168,76),.2),inset 0 0 20px rgba(var(--house-rgb,201,168,76),.05); transform:translateY(-2px); }
+  .house-card.active { background:rgba(var(--house-rgb,201,168,76),.08); }
+  .house-icon { font-size:1.6rem; display:block; margin-bottom:.3rem; }
+  .house-name { font-family:'Cinzel',serif; font-size:.65rem; letter-spacing:.1em; color:var(--house-color,var(--gold)); text-transform:uppercase; display:block; margin-bottom:.2rem; }
+  .house-god { font-size:.7rem; color:var(--ash); font-style:italic; }
+  .house-apolo    { --house-color:#f5c842; --house-rgb:245,200,66; }
+  .house-artemisa { --house-color:#b8c8e8; --house-rgb:184,200,232; }
+  .house-ares     { --house-color:#c0392b; --house-rgb:192,57,43; }
+  .house-afrodita { --house-color:#e8a0b8; --house-rgb:232,160,184; }
+  .house-atenea   { --house-color:#5db8d4; --house-rgb:93,184,212; }
+  .house-zeus     { --house-color:#a080e0; --house-rgb:160,128,224; }
+  .house-hades    { --house-color:#7a5fa0; --house-rgb:122,95,160; }
+
+  .oracle-container { width:100%; max-width:680px; }
+  .oracle-frame { border:1px solid rgba(201,168,76,.25); border-radius:6px; overflow:hidden; background:rgba(10,6,8,.7); backdrop-filter:blur(10px); position:relative; }
+  .oracle-frame::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
+  .oracle-header { padding:1rem 1.5rem .8rem; border-bottom:1px solid rgba(201,168,76,.1); display:flex; align-items:center; gap:.8rem; }
+  .oracle-dot { width:8px; height:8px; border-radius:50%; background:var(--gold); box-shadow:0 0 8px var(--gold); animation:blink 2s ease-in-out infinite; }
+  @keyframes blink { 0%,100%{opacity:.4;} 50%{opacity:1;} }
+  .oracle-header-text { font-family:'Cinzel',serif; font-size:.7rem; letter-spacing:.2em; color:var(--ash); text-transform:uppercase; }
+  .oracle-body { padding:1.8rem; }
+  .input-group { margin-bottom:1.2rem; }
+  .input-label { font-family:'Cinzel',serif; font-size:.65rem; letter-spacing:.2em; color:var(--ash); text-transform:uppercase; display:block; margin-bottom:.5rem; }
+  textarea, select { width:100%; background:rgba(255,255,255,.03); border:1px solid rgba(201,168,76,.2); border-radius:3px; color:var(--divine); font-family:'EB Garamond',serif; font-size:1rem; padding:.7rem 1rem; outline:none; transition:border-color .3s; }
+  textarea { min-height:90px; resize:vertical; }
+  textarea:focus, select:focus { border-color:rgba(201,168,76,.5); box-shadow:0 0 15px rgba(201,168,76,.08); }
+  select option { background:#1a1018; }
+  .selects-row { display:grid; grid-template-columns:1fr 1fr; gap:.7rem; margin-bottom:1.2rem; }
+  .btn-invoke { width:100%; padding:.9rem 2rem; background:transparent; border:1px solid var(--gold-dim); border-radius:3px; color:var(--gold); font-family:'Cinzel',serif; font-size:.8rem; letter-spacing:.25em; text-transform:uppercase; cursor:pointer; position:relative; overflow:hidden; transition:all .4s; }
+  .btn-invoke::before { content:''; position:absolute; top:50%; left:50%; width:0; height:0; background:rgba(201,168,76,.1); border-radius:50%; transform:translate(-50%,-50%); transition:width .6s,height .6s; }
+  .btn-invoke:hover::before { width:400px; height:400px; }
+  .btn-invoke:hover { border-color:var(--gold); color:var(--gold-light); box-shadow:0 0 25px rgba(201,168,76,.2); }
+  .btn-invoke:disabled { opacity:.4; cursor:not-allowed; }
+  .loading-veil { display:none; text-align:center; padding:2rem; }
+  .loading-veil.show { display:block; }
+  .divine-spinner { font-size:2rem; animation:spin-divine 2s linear infinite; display:block; margin-bottom:.8rem; }
+  @keyframes spin-divine { 0%{transform:rotate(0deg);filter:hue-rotate(0deg);} 100%{transform:rotate(360deg);filter:hue-rotate(360deg);} }
+  .loading-text { font-family:'Cinzel',serif; font-size:.7rem; letter-spacing:.2em; color:var(--ash); text-transform:uppercase; animation:flicker 1.5s ease-in-out infinite; }
+  @keyframes flicker { 0%,100%{opacity:.4;} 50%{opacity:1;} }
+  .result-area { margin-top:1.5rem; display:none; }
+  .result-area.visible { display:block; }
+  .result-divider { display:flex; align-items:center; gap:.8rem; margin-bottom:1.2rem; }
+  .result-divider::before,.result-divider::after { content:''; flex:1; height:1px; background:rgba(201,168,76,.2); }
+  .result-divider-icon { color:var(--gold); font-size:.9rem; }
+  .god-speaking { display:flex; align-items:center; gap:.8rem; margin-bottom:1rem; }
+  .god-avatar { width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.3rem; border:1px solid; flex-shrink:0; animation:halo 3s ease-in-out infinite; }
+  @keyframes halo { 0%,100%{box-shadow:0 0 10px var(--house-color,var(--gold));} 50%{box-shadow:0 0 25px var(--house-color,var(--gold)),0 0 50px rgba(var(--house-rgb,201,168,76),.2);} }
+  .god-info .god-title { font-family:'Cinzel',serif; font-size:.65rem; letter-spacing:.15em; color:var(--ash); text-transform:uppercase; }
+  .god-info .god-name { font-family:'Cinzel Decorative',serif; font-size:.95rem; }
+  .oracle-text { font-family:'EB Garamond',serif; font-size:1.1rem; line-height:1.8; color:var(--divine); font-style:italic; border-left:2px solid rgba(201,168,76,.3); padding-left:1.2rem; margin-bottom:1.2rem; position:relative; }
+  .oracle-text::before { content:'"'; font-size:3rem; color:var(--gold-dim); position:absolute; top:-.5rem; left:-.5rem; font-family:'EB Garamond',serif; line-height:1; opacity:.4; }
+  .decree-box { background:rgba(201,168,76,.04); border:1px solid rgba(201,168,76,.15); border-radius:3px; padding:1rem 1.2rem; margin-bottom:1rem; }
+  .decree-label { font-family:'Cinzel',serif; font-size:.6rem; letter-spacing:.25em; color:var(--gold-dim); text-transform:uppercase; margin-bottom:.4rem; }
+  .decree-text { font-size:.95rem; color:var(--divine); line-height:1.6; }
+  .fate-seal { display:flex; align-items:center; gap:.5rem; justify-content:flex-end; margin-top:.8rem; }
+  .fate-seal span { font-family:'Cinzel',serif; font-size:.6rem; letter-spacing:.2em; color:var(--ash); text-transform:uppercase; }
+  .seal-mark { color:var(--gold); font-size:.8rem; opacity:.7; }
+
+  .noticiero-section { width:100%; max-width:680px; margin-top:2rem; }
+  .noticiero-header { display:flex; align-items:center; gap:1rem; margin-bottom:1rem; }
+  .noticiero-badge { background:var(--blood); color:#fff; font-family:'Cinzel',serif; font-size:.55rem; letter-spacing:.2em; padding:.2rem .6rem; border-radius:2px; text-transform:uppercase; animation:pulse-red 2s ease-in-out infinite; }
+  @keyframes pulse-red { 0%,100%{opacity:.8;} 50%{opacity:1;box-shadow:0 0 10px var(--blood);} }
+  .noticiero-title { font-family:'Cinzel',serif; font-size:.85rem; letter-spacing:.15em; color:var(--gold); }
+  .rumors-feed { display:flex; flex-direction:column; gap:.6rem; }
+  .rumor-item { background:rgba(255,255,255,.02); border:1px solid rgba(201,168,76,.1); border-left:2px solid var(--house-color,var(--gold-dim)); border-radius:0 3px 3px 0; padding:.7rem 1rem; display:flex; gap:.8rem; align-items:flex-start; transition:background .2s; }
+  .rumor-item:hover { background:rgba(255,255,255,.04); }
+  .rumor-icon { font-size:.9rem; flex-shrink:0; margin-top:.1rem; }
+  .rumor-text { font-size:.9rem; color:var(--divine); line-height:1.5; flex:1; }
+  .rumor-text em { color:var(--gold); font-style:normal; font-family:'Cinzel',serif; font-size:.75rem; }
+  .btn-noticiero { display:flex; align-items:center; gap:.5rem; background:transparent; border:1px solid rgba(201,168,76,.2); border-radius:3px; color:var(--ash); font-family:'Cinzel',serif; font-size:.65rem; letter-spacing:.15em; text-transform:uppercase; padding:.4rem .8rem; cursor:pointer; transition:all .2s; margin-top:.8rem; }
+  .btn-noticiero:hover { border-color:var(--gold-dim); color:var(--gold); }
+
+  footer { margin-top:3rem; text-align:center; }
+  .footer-text { font-family:'Cinzel',serif; font-size:.6rem; letter-spacing:.25em; color:rgba(138,112,144,.4); text-transform:uppercase; }
+  .footer-quote { font-style:italic; color:rgba(138,112,144,.3); font-size:.8rem; margin-top:.3rem; }
+  @keyframes reveal-down { from{opacity:0;transform:translateY(15px);} to{opacity:1;transform:translateY(0);} }
+  .animate-reveal { animation:reveal-down .6s ease forwards; }
+  @media(max-width:480px) {
+    .selects-row { grid-template-columns:1fr; }
+    .houses-grid { grid-template-columns:repeat(4,1fr); }
+    .house-card { padding:.6rem .3rem; }
+    .house-icon { font-size:1.2rem; }
+    .house-name { font-size:.55rem; }
+    .house-god { display:none; }
+  }
+</style>
+</head>
+<body>
+<div class="starfield"></div>
+<div class="nebula"></div>
+<div class="page">
+
+  <header>
+    <div class="crown-line"><span class="crown-symbol">𓂀</span></div>
+    <h1>Oráculo Celestial</h1>
+    <p class="subtitle">Academia de los Mil Imperios — Voluntad Divina</p>
+    <div class="divider"><div class="divider-gem"></div></div>
+  </header>
+
+  <p class="section-label">Invoca a tu casa divina</p>
+  <div class="houses-grid">
+    <div class="house-card house-apolo" data-house="Heliadoris" data-god="Apolo" data-icon="☀️" onclick="selectHouse(this)">
+      <span class="house-icon">☀️</span><span class="house-name">Heliadoris</span><span class="house-god">Apolo</span>
+    </div>
+    <div class="house-card house-artemisa" data-house="Tsukiyomi No Rei" data-god="Artemisa" data-icon="🌙" onclick="selectHouse(this)">
+      <span class="house-icon">🌙</span><span class="house-name">Tsukiyomi No Rei</span><span class="house-god">Artemisa</span>
+    </div>
+    <div class="house-card house-ares" data-house="Valkyron" data-god="Ares" data-icon="⚔️" onclick="selectHouse(this)">
+      <span class="house-icon">⚔️</span><span class="house-name">Valkyron</span><span class="house-god">Ares</span>
+    </div>
+    <div class="house-card house-afrodita" data-house="Eryssia" data-god="Afrodita" data-icon="🕊️" onclick="selectHouse(this)">
+      <span class="house-icon">🕊️</span><span class="house-name">Eryssia</span><span class="house-god">Afrodita</span>
+    </div>
+    <div class="house-card house-atenea" data-house="Noctyra" data-god="Atenea" data-icon="🧠" onclick="selectHouse(this)">
+      <span class="house-icon">🧠</span><span class="house-name">Noctyra</span><span class="house-god">Atenea</span>
+    </div>
+    <div class="house-card house-zeus" data-house="Imperion" data-god="Zeus" data-icon="⚡" onclick="selectHouse(this)">
+      <span class="house-icon">⚡</span><span class="house-name">Imperion</span><span class="house-god">Zeus</span>
+    </div>
+    <div class="house-card house-hades" data-house="Umbra Mortis" data-god="Hades" data-icon="🔥" onclick="selectHouse(this)">
+      <span class="house-icon">🔥</span><span class="house-name">Umbra Mortis</span><span class="house-god">Hades</span>
+    </div>
+  </div>
+
+  <div class="oracle-container">
+    <div class="oracle-frame">
+      <div class="oracle-header">
+        <div class="oracle-dot"></div>
+        <span class="oracle-header-text">Cámara del Oráculo — Acceso Permitido</span>
+      </div>
+      <div class="oracle-body">
+        <div class="input-group">
+          <label class="input-label">Situación o consulta del alumno</label>
+          <textarea id="contextInput" placeholder="Ej: Mi compromiso arreglado con la Casa Aurelion fue descubierto como una trampa... ¿qué decreto emitirá el dios sobre mi destino?"></textarea>
+        </div>
+        <div class="selects-row">
+          <div class="input-group" style="margin-bottom:0">
+            <label class="input-label">Clase social</label>
+            <select id="socialClass">
+              <option>Alta Nobleza</option>
+              <option>Nobleza Media</option>
+              <option>Plebeyo Talentoso</option>
+              <option>Sirviente de la Academia</option>
+            </select>
+          </div>
+          <div class="input-group" style="margin-bottom:0">
+            <label class="input-label">Tipo de decreto</label>
+            <select id="decreeType">
+              <option value="destino">Decreto de Destino</option>
+              <option value="juicio">Juicio Divino</option>
+              <option value="bendicion">Bendición Divina</option>
+              <option value="maldicion">Maldición</option>
+              <option value="prueba">Prueba del Dios</option>
+              <option value="profecia">Profecía</option>
+            </select>
+          </div>
+        </div>
+        <br>
+        <button class="btn-invoke" id="invokeBtn" onclick="invokeOracle()" disabled>✦ Invocar la Voluntad Divina ✦</button>
+        <div class="loading-veil" id="loadingVeil">
+          <span class="divine-spinner">𓂀</span>
+          <p class="loading-text">Los dioses deliberan...</p>
+        </div>
+        <div class="result-area" id="resultArea">
+          <div class="result-divider"><span class="result-divider-icon">✦</span></div>
+          <div class="god-speaking">
+            <div class="god-avatar" id="godAvatar"></div>
+            <div class="god-info">
+              <div class="god-title">Habla el Dios de la Casa</div>
+              <div class="god-name" id="godNameDisplay"></div>
+            </div>
+          </div>
+          <div class="oracle-text" id="oracleText"></div>
+          <div class="decree-box">
+            <div class="decree-label">⚖ Decreto Divino Oficial</div>
+            <div class="decree-text" id="decreeText"></div>
+          </div>
+          <div class="fate-seal">
+            <span class="seal-mark">𓆩</span><span>Sellado por los cielos</span><span class="seal-mark">𓆪</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="noticiero-section">
+      <div class="noticiero-header">
+        <span class="noticiero-badge">⚡ En vivo</span>
+        <span class="noticiero-title">El Noticiero Celestial</span>
+      </div>
+      <div class="rumors-feed" id="rumorsFeed">
+        <div class="rumor-item" style="--house-color:#f5c842">
+          <span class="rumor-icon">👁</span>
+          <span class="rumor-text">Se rumorea que un heredero de <em>Casa Heliadoris</em> ha roto su compromiso arreglado… ¿castigo divino o guerra inminente?</span>
+        </div>
+        <div class="rumor-item" style="--house-color:#b8c8e8">
+          <span class="rumor-icon">🌙</span>
+          <span class="rumor-text">Una estudiante de <em>Tsukiyomi No Rei</em> fue vista abandonando los templos de madrugada. Sus ojos brillaban como la luna llena.</span>
+        </div>
+        <div class="rumor-item" style="--house-color:#c0392b">
+          <span class="rumor-icon">⚔️</span>
+          <span class="rumor-text">El duelo de honor entre <em>Valkyron</em> y <em>Noctyra</em> fue cancelado sin explicación. Ambas casas guardan silencio incómodo.</span>
+        </div>
+        <div class="rumor-item" style="--house-color:#7a5fa0">
+          <span class="rumor-icon">🔥</span>
+          <span class="rumor-text">Algo se mueve en <em>Umbra Mortis</em>. Tres alumnos desaparecieron de los registros esta semana. Ningún maestro ha dado explicaciones.</span>
+        </div>
+      </div>
+      <button class="btn-noticiero" onclick="generateRumor()"><span>✦</span> Generar nuevo rumor</button>
+    </div>
+  </div>
+
+  <footer>
+    
