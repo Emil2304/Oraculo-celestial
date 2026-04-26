@@ -38,7 +38,6 @@
       radial-gradient(ellipse 80% 30% at 50% 90%, rgba(120,20,30,.08) 0%, transparent 70%);
   }
   .page { position:relative; z-index:1; min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:2rem 1rem 4rem; }
-
   header { text-align:center; padding:2rem 0 1.5rem; }
   .crown-line { display:flex; align-items:center; justify-content:center; gap:1rem; margin-bottom:.5rem; }
   .crown-line::before, .crown-line::after { content:''; flex:1; max-width:120px; height:1px; background:linear-gradient(to var(--d,right), transparent, var(--gold)); }
@@ -55,7 +54,6 @@
   .divider::before, .divider::after { content:''; flex:1; height:1px; background:linear-gradient(to var(--d,right), transparent, var(--gold-dim)); }
   .divider::before{--d:right;} .divider::after{--d:left;}
   .divider-gem { width:6px; height:6px; background:var(--gold); transform:rotate(45deg); box-shadow:0 0 10px var(--gold); }
-
   .section-label { font-family:'Cinzel',serif; font-size:.7rem; letter-spacing:.3em; text-transform:uppercase; color:var(--ash); text-align:center; margin-bottom:1.2rem; }
   .houses-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:.7rem; width:100%; max-width:780px; margin-bottom:2rem; }
   .house-card { background:rgba(255,255,255,.02); border:1px solid rgba(201,168,76,.15); border-radius:4px; padding:.9rem .6rem; cursor:pointer; text-align:center; transition:all .3s; position:relative; overflow:hidden; }
@@ -71,7 +69,6 @@
   .house-atenea   { --house-color:#5db8d4; --house-rgb:93,184,212; }
   .house-zeus     { --house-color:#a080e0; --house-rgb:160,128,224; }
   .house-hades    { --house-color:#7a5fa0; --house-rgb:122,95,160; }
-
   .oracle-container { width:100%; max-width:680px; }
   .oracle-frame { border:1px solid rgba(201,168,76,.25); border-radius:6px; overflow:hidden; background:rgba(10,6,8,.7); backdrop-filter:blur(10px); position:relative; }
   .oracle-frame::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
@@ -85,7 +82,6 @@
   textarea, select { width:100%; background:rgba(255,255,255,.03); border:1px solid rgba(201,168,76,.2); border-radius:3px; color:var(--divine); font-family:'EB Garamond',serif; font-size:1rem; padding:.7rem 1rem; outline:none; transition:border-color .3s; }
   textarea { min-height:90px; resize:vertical; }
   textarea:focus, select:focus { border-color:rgba(201,168,76,.5); box-shadow:0 0 15px rgba(201,168,76,.08); }
-  select option { background:#1a1018; }
   .selects-row { display:grid; grid-template-columns:1fr 1fr; gap:.7rem; margin-bottom:1.2rem; }
   .btn-invoke { width:100%; padding:.9rem 2rem; background:transparent; border:1px solid var(--gold-dim); border-radius:3px; color:var(--gold); font-family:'Cinzel',serif; font-size:.8rem; letter-spacing:.25em; text-transform:uppercase; cursor:pointer; position:relative; overflow:hidden; transition:all .4s; }
   .btn-invoke::before { content:''; position:absolute; top:50%; left:50%; width:0; height:0; background:rgba(201,168,76,.1); border-radius:50%; transform:translate(-50%,-50%); transition:width .6s,height .6s; }
@@ -116,7 +112,6 @@
   .fate-seal { display:flex; align-items:center; gap:.5rem; justify-content:flex-end; margin-top:.8rem; }
   .fate-seal span { font-family:'Cinzel',serif; font-size:.6rem; letter-spacing:.2em; color:var(--ash); text-transform:uppercase; }
   .seal-mark { color:var(--gold); font-size:.8rem; opacity:.7; }
-
   .noticiero-section { width:100%; max-width:680px; margin-top:2rem; }
   .noticiero-header { display:flex; align-items:center; gap:1rem; margin-bottom:1rem; }
   .noticiero-badge { background:var(--blood); color:#fff; font-family:'Cinzel',serif; font-size:.55rem; letter-spacing:.2em; padding:.2rem .6rem; border-radius:2px; text-transform:uppercase; animation:pulse-red 2s ease-in-out infinite; }
@@ -130,7 +125,6 @@
   .rumor-text em { color:var(--gold); font-style:normal; font-family:'Cinzel',serif; font-size:.75rem; }
   .btn-noticiero { display:flex; align-items:center; gap:.5rem; background:transparent; border:1px solid rgba(201,168,76,.2); border-radius:3px; color:var(--ash); font-family:'Cinzel',serif; font-size:.65rem; letter-spacing:.15em; text-transform:uppercase; padding:.4rem .8rem; cursor:pointer; transition:all .2s; margin-top:.8rem; }
   .btn-noticiero:hover { border-color:var(--gold-dim); color:var(--gold); }
-
   footer { margin-top:3rem; text-align:center; }
   .footer-text { font-family:'Cinzel',serif; font-size:.6rem; letter-spacing:.25em; color:rgba(138,112,144,.4); text-transform:uppercase; }
   .footer-quote { font-style:italic; color:rgba(138,112,144,.3); font-size:.8rem; margin-top:.3rem; }
@@ -150,14 +144,12 @@
 <div class="starfield"></div>
 <div class="nebula"></div>
 <div class="page">
-
   <header>
     <div class="crown-line"><span class="crown-symbol">𓂀</span></div>
     <h1>Oráculo Celestial</h1>
     <p class="subtitle">Academia de los Mil Imperios — Voluntad Divina</p>
     <div class="divider"><div class="divider-gem"></div></div>
   </header>
-
   <p class="section-label">Invoca a tu casa divina</p>
   <div class="houses-grid">
     <div class="house-card house-apolo" data-house="Heliadoris" data-god="Apolo" data-icon="☀️" onclick="selectHouse(this)">
@@ -182,7 +174,6 @@
       <span class="house-icon">🔥</span><span class="house-name">Umbra Mortis</span><span class="house-god">Hades</span>
     </div>
   </div>
-
   <div class="oracle-container">
     <div class="oracle-frame">
       <div class="oracle-header">
@@ -192,7 +183,7 @@
       <div class="oracle-body">
         <div class="input-group">
           <label class="input-label">Situación o consulta del alumno</label>
-          <textarea id="contextInput" placeholder="Ej: Mi compromiso arreglado con la Casa Aurelion fue descubierto como una trampa... ¿qué decreto emitirá el dios sobre mi destino?"></textarea>
+          <textarea id="contextInput" placeholder="Ej: He descubierto un secreto prohibido..."></textarea>
         </div>
         <div class="selects-row">
           <div class="input-group" style="margin-bottom:0">
@@ -207,17 +198,17 @@
           <div class="input-group" style="margin-bottom:0">
             <label class="input-label">Tipo de decreto</label>
             <select id="decreeType">
-              <option value="destino">Decreto de Destino</option>
-              <option value="juicio">Juicio Divino</option>
-              <option value="bendicion">Bendición Divina</option>
-              <option value="maldicion">Maldición</option>
-              <option value="prueba">Prueba del Dios</option>
-              <option value="profecia">Profecía</option>
+              <option>Decreto de Destino</option>
+              <option>Juicio Divino</option>
+              <option>Bendición Divina</option>
+              <option>Maldición</option>
+              <option>Prueba del Dios</option>
+              <option>Profecía</option>
             </select>
           </div>
         </div>
         <br>
-        <button class="btn-invoke" id="invokeBtn" onclick="invokeOracle()" disabled>✦ Invocar la Voluntad Divina ✦</button>
+        <button class="btn-invoke" id="invokeBtn" onclick="invokeOracle()" disabled>✦ Selecciona tu Casa ✦</button>
         <div class="loading-veil" id="loadingVeil">
           <span class="divine-spinner">𓂀</span>
           <p class="loading-text">Los dioses deliberan...</p>
@@ -242,7 +233,6 @@
         </div>
       </div>
     </div>
-
     <div class="noticiero-section">
       <div class="noticiero-header">
         <span class="noticiero-badge">⚡ En vivo</span>
@@ -251,103 +241,71 @@
       <div class="rumors-feed" id="rumorsFeed">
         <div class="rumor-item" style="--house-color:#f5c842">
           <span class="rumor-icon">👁</span>
-          <span class="rumor-text">Se rumorea que un heredero de <em>Casa Heliadoris</em> ha roto su compromiso arreglado… ¿castigo divino o guerra inminente?</span>
-        </div>
-        <div class="rumor-item" style="--house-color:#b8c8e8">
-          <span class="rumor-icon">🌙</span>
-          <span class="rumor-text">Una estudiante de <em>Tsukiyomi No Rei</em> fue vista abandonando los templos de madrugada. Sus ojos brillaban como la luna llena.</span>
-        </div>
-        <div class="rumor-item" style="--house-color:#c0392b">
-          <span class="rumor-icon">⚔️</span>
-          <span class="rumor-text">El duelo de honor entre <em>Valkyron</em> y <em>Noctyra</em> fue cancelado sin explicación. Ambas casas guardan silencio incómodo.</span>
-        </div>
-        <div class="rumor-item" style="--house-color:#7a5fa0">
-          <span class="rumor-icon">🔥</span>
-          <span class="rumor-text">Algo se mueve en <em>Umbra Mortis</em>. Tres alumnos desaparecieron de los registros esta semana. Ningún maestro ha dado explicaciones.</span>
+          <span class="rumor-text">Se rumorea que un heredero de <em>Casa Heliadoris</em> ha roto su compromiso arreglado… ¿castigo divino?</span>
         </div>
       </div>
       <button class="btn-noticiero" onclick="generateRumor()"><span>✦</span> Generar nuevo rumor</button>
     </div>
   </div>
-
   <footer>
     <p class="footer-text">Academia de los Mil Imperios — Sistema de Consulta Divina</p>
     <p class="footer-quote">"El destino es un hilo de seda en manos de los dioses."</p>
   </footer>
-
 </div>
-
 <script>
   let selectedHouseData = null;
-
   function selectHouse(element) {
     document.querySelectorAll('.house-card').forEach(card => card.classList.remove('active'));
     element.classList.add('active');
-    
     selectedHouseData = {
       house: element.getAttribute('data-house'),
       god: element.getAttribute('data-god'),
       icon: element.getAttribute('data-icon'),
       color: getComputedStyle(element).getPropertyValue('--house-color')
     };
-    
-    document.getElementById('invokeBtn').disabled = false;
+    const btn = document.getElementById('invokeBtn');
+    btn.disabled = false;
+    btn.innerText = "✦ Invocar a " + selectedHouseData.god + " ✦";
   }
-
   function invokeOracle() {
-    const context = document.getElementById('contextInput').value;
-    const socialClass = document.getElementById('socialClass').value;
-    const decree = document.getElementById('decreeType').value;
-    
     if(!selectedHouseData) return;
-
+    const socialClass = document.getElementById('socialClass').value;
+    const decreeType = document.getElementById('decreeType').value;
     document.getElementById('invokeBtn').style.display = 'none';
     document.getElementById('resultArea').style.display = 'none';
     document.getElementById('loadingVeil').classList.add('show');
-
     setTimeout(() => {
       document.getElementById('loadingVeil').classList.remove('show');
       document.getElementById('resultArea').style.display = 'block';
       document.getElementById('invokeBtn').style.display = 'block';
-
-      const godDisplay = document.getElementById('godNameDisplay');
       const avatar = document.getElementById('godAvatar');
-      const oracleText = document.getElementById('oracleText');
-      const decreeText = document.getElementById('decreeText');
-
-      godDisplay.innerText = selectedHouseData.god;
       avatar.innerText = selectedHouseData.icon;
       avatar.style.borderColor = selectedHouseData.color;
       avatar.style.setProperty('--house-color', selectedHouseData.color);
-
-      // Respuestas aleatorias simples
-      const respuestas = [
-        "Tus acciones han sido observadas desde el firmamento. No esperes piedad si tu corazón flaquea.",
-        "El destino que buscas está escrito en las estrellas, pero solo tú puedes alcanzarlo con sacrificio.",
-        "Como " + socialClass + ", tu deber es aceptar lo que los cielos han dictado para tu linaje.",
-        "La Casa " + selectedHouseData.house + " no olvida las deudas de sangre. Prepárate."
+      document.getElementById('godNameDisplay').innerText = selectedHouseData.god;
+      const misiones = [
+        `Como ${selectedHouseData.god}, te ordeno una misión: Infíltrate en los dormitorios de la casa rival y recupera el sello de oro.`,
+        `Tu camino como ${socialClass} es incierto. Mi recomendación es que no confíes en nadie que porte plata esta semana.`,
+        `Las estrellas revelan un secreto en el jardín. Tu misión es encontrar la flor de cristal que florece bajo la luna.`,
+        `¡Escucha bien! Alguien de la Nobleza Media planea desafiarte. Prepárate para un duelo de magia.`,
+        `El destino te sonríe. Te recomendación es que entregues una ofrenda anónima para asegurar tu victoria.`,
+        `He visto tu futuro... y hay sombras. Tu misión es proteger al heredero de la Casa ${selectedHouseData.house} de una traición.`
       ];
-      
-      oracleText.innerText = respuestas[Math.floor(Math.random() * respuestas.length)];
-      decreeText.innerText = "Se dictamina un " + decree.toUpperCase() + " inmediato. La voluntad de " + selectedHouseData.god + " se cumplirá antes del próximo eclipse.";
-      
+      document.getElementById('oracleText').innerText = misiones[Math.floor(Math.random() * misiones.length)];
+      document.getElementById('decreeText').innerText = `Se ha dictado un ${decreeType.toUpperCase()}. La voluntad divina es ley absoluta.`;
     }, 2000);
   }
-
   function generateRumor() {
     const feed = document.getElementById('rumorsFeed');
+    const chismes = ["ha sido visto robando pociones.", "susurró un nombre prohibido.", "recibió una carta sellada con sangre.", "ha perdido su amuleto protector."];
     const casas = ["Heliadoris", "Valkyron", "Noctyra", "Imperion", "Umbra Mortis"];
-    const casa = casas[Math.floor(Math.random() * casas.length)];
-    
+    const c = casas[Math.floor(Math.random() * casas.length)];
+    const ch = chismes[Math.floor(Math.random() * chismes.length)];
     const nuevoRumor = document.createElement('div');
     nuevoRumor.className = 'rumor-item animate-reveal';
-    nuevoRumor.innerHTML = `
-      <span class="rumor-icon">✨</span>
-      <span class="rumor-text">Mensaje urgente: Se ha detectado una anomalía mágica en la frontera de <em>${casa}</em>.</span>
-    `;
+    nuevoRumor.innerHTML = `<span class="rumor-icon">✨</span><span class="rumor-text">Última hora: Alguien de <em>${c}</em> ${ch}</span>`;
     feed.prepend(nuevoRumor);
   }
 </script>
 </body>
-</html>
-    
+      </html>
