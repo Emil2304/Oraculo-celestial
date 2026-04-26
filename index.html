@@ -271,4 +271,83 @@
   </div>
 
   <footer>
+    <p class="footer-text">Academia de los Mil Imperios — Sistema de Consulta Divina</p>
+    <p class="footer-quote">"El destino es un hilo de seda en manos de los dioses."</p>
+  </footer>
+
+</div>
+
+<script>
+  let selectedHouseData = null;
+
+  function selectHouse(element) {
+    document.querySelectorAll('.house-card').forEach(card => card.classList.remove('active'));
+    element.classList.add('active');
+    
+    selectedHouseData = {
+      house: element.getAttribute('data-house'),
+      god: element.getAttribute('data-god'),
+      icon: element.getAttribute('data-icon'),
+      color: getComputedStyle(element).getPropertyValue('--house-color')
+    };
+    
+    document.getElementById('invokeBtn').disabled = false;
+  }
+
+  function invokeOracle() {
+    const context = document.getElementById('contextInput').value;
+    const socialClass = document.getElementById('socialClass').value;
+    const decree = document.getElementById('decreeType').value;
+    
+    if(!selectedHouseData) return;
+
+    document.getElementById('invokeBtn').style.display = 'none';
+    document.getElementById('resultArea').style.display = 'none';
+    document.getElementById('loadingVeil').classList.add('show');
+
+    setTimeout(() => {
+      document.getElementById('loadingVeil').classList.remove('show');
+      document.getElementById('resultArea').style.display = 'block';
+      document.getElementById('invokeBtn').style.display = 'block';
+
+      const godDisplay = document.getElementById('godNameDisplay');
+      const avatar = document.getElementById('godAvatar');
+      const oracleText = document.getElementById('oracleText');
+      const decreeText = document.getElementById('decreeText');
+
+      godDisplay.innerText = selectedHouseData.god;
+      avatar.innerText = selectedHouseData.icon;
+      avatar.style.borderColor = selectedHouseData.color;
+      avatar.style.setProperty('--house-color', selectedHouseData.color);
+
+      // Respuestas aleatorias simples
+      const respuestas = [
+        "Tus acciones han sido observadas desde el firmamento. No esperes piedad si tu corazón flaquea.",
+        "El destino que buscas está escrito en las estrellas, pero solo tú puedes alcanzarlo con sacrificio.",
+        "Como " + socialClass + ", tu deber es aceptar lo que los cielos han dictado para tu linaje.",
+        "La Casa " + selectedHouseData.house + " no olvida las deudas de sangre. Prepárate."
+      ];
+      
+      oracleText.innerText = respuestas[Math.floor(Math.random() * respuestas.length)];
+      decreeText.innerText = "Se dictamina un " + decree.toUpperCase() + " inmediato. La voluntad de " + selectedHouseData.god + " se cumplirá antes del próximo eclipse.";
+      
+    }, 2000);
+  }
+
+  function generateRumor() {
+    const feed = document.getElementById('rumorsFeed');
+    const casas = ["Heliadoris", "Valkyron", "Noctyra", "Imperion", "Umbra Mortis"];
+    const casa = casas[Math.floor(Math.random() * casas.length)];
+    
+    const nuevoRumor = document.createElement('div');
+    nuevoRumor.className = 'rumor-item animate-reveal';
+    nuevoRumor.innerHTML = `
+      <span class="rumor-icon">✨</span>
+      <span class="rumor-text">Mensaje urgente: Se ha detectado una anomalía mágica en la frontera de <em>${casa}</em>.</span>
+    `;
+    feed.prepend(nuevoRumor);
+  }
+</script>
+</body>
+</html>
     
